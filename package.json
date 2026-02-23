@@ -1,0 +1,16 @@
+{
+  "name": "notely",
+  "version": "1.0.0",
+  "description": "Notely project with CI and Vitest",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "vitest --run"
+  },
+  "keywords": [],
+  "author": "Dana Badarneh",
+  "license": "MIT",
+  "devDependencies": {
+    "vitest": "^4.0.18"
+  }
+}
