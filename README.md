@@ -34,3 +34,4 @@ You do *not* need to set up a database or any interactivity on the webpage yet. 
 Dana Badarneh's version of Boot.dev's Notely app.
 # Test CI
 # Trigger CI
+# Trigger CI workflow
