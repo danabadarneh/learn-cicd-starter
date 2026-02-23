@@ -2,33 +2,26 @@ name: CI
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
-    branches:
-      - main
+    branches: [main]
   workflow_dispatch:
 
 jobs:
-  tests:
-    name: Run Tests
+  Tests:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. استرجاع الكود من الريبو
-      - name: Check out code
-        uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      # 2. تثبيت Node.js (اختياري لو لازم إصدار محدد)
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20'
+          node-version: 20
 
-      # 3. تثبيت dependencies نظيفة
       - name: Install dependencies
         run: npm ci
 
-      # 4. تشغيل الاختبارات مع coverage
       - name: Run tests
         run: npm run test -- --coverage
