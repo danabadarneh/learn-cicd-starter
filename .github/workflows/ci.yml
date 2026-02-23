@@ -3,6 +3,7 @@ name: ci
 on:
   pull_request:
     branches: [main]
+  workflow_dispatch:   
 
 jobs:
   tests:
@@ -18,5 +19,5 @@ jobs:
         with:
           node-version: 22
 
-      - name: Show Node Version
-        run: node --version
+      - name: Show Node version
+        run: node --version   
