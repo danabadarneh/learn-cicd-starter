@@ -1,9 +1,10 @@
 name: ci
 
+# متى ينفذ الـ workflow
 on:
   pull_request:
     branches: [main]
-  workflow_dispatch:
+  workflow_dispatch:   # لتشغيله يدويًا من GitHub Actions
 
 jobs:
   tests:
@@ -11,11 +12,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # خطوة 1: نسحب الكود
       - name: Check out code
         uses: actions/checkout@v4
 
+      # خطوة 2: إعداد Node
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # خطوة 3: تثبيت الاعتمادات
       - name: Install dependencies
         run: npm ci
 
-      - name: Run tests
+      # خطوة 4: تشغيل الاختبارات
+      - name: Run Tests
         run: npm run test
