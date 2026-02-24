@@ -1,32 +1,24 @@
 name: CI
 
-# Workflow triggers
 on:
   push:
-    branches: [main]
   pull_request:
-    branches: [main]
-  workflow_dispatch:
 
 jobs:
   Tests:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout the repo
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      # Setup Node.js
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 18
 
-      # Install dependencies
       - name: Install dependencies
         run: npm install
 
-      # Run tests with coverage
-      - name: Run tests
+      - name: Run tests with coverage
         run: npm run test -- --coverage
