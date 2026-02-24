@@ -1,27 +1,20 @@
 {
-  "name": "notely",
+  "name": "learn-cicd-starter",
   "version": "1.0.0",
-  "description": "Notely project with CI and Vitest",
+  "description": "",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-<<<<<<< HEAD
-    "test": "vitest --run"
-=======
     "test": "vitest --run",
-    "format:write": "prettier --write \"src/**/*.{js,ts,json,css,md}\"",
-    "format:check": "prettier --check \"src/**/*.{js,ts,json,css,md}\""
->>>>>>> addtests
+    "format:check": "prettier --check .",
+    "format:write": "prettier --write ."
   },
-  "keywords": [],
-  "author": "Dana Badarneh",
-  "license": "MIT",
+  "dependencies": {
+    "some-package": "^1.0.0"
+  },
   "devDependencies": {
-    "@vitest/coverage-v8": "^4.0.18",
-<<<<<<< HEAD
-=======
     "prettier": "3.8.1",
->>>>>>> addtests
-    "vitest": "^4.0.18"
+    "vitest": "^4.0.18",
+    "@vitest/coverage-v8": "^4.0.18"
   }
 }
