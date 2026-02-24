@@ -5,13 +5,23 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
+<<<<<<< HEAD
     "test": "vitest --run"
+=======
+    "test": "vitest --run",
+    "format:write": "prettier --write \"src/**/*.{js,ts,json,css,md}\"",
+    "format:check": "prettier --check \"src/**/*.{js,ts,json,css,md}\""
+>>>>>>> addtests
   },
   "keywords": [],
   "author": "Dana Badarneh",
   "license": "MIT",
   "devDependencies": {
     "@vitest/coverage-v8": "^4.0.18",
+<<<<<<< HEAD
+=======
+    "prettier": "3.8.1",
+>>>>>>> addtests
     "vitest": "^4.0.18"
   }
 }
