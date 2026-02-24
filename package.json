@@ -9,9 +9,7 @@
     "format:check": "prettier --check .",
     "format:write": "prettier --write ."
   },
-  "dependencies": {
-    "some-package": "^1.0.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "prettier": "3.8.1",
     "vitest": "^4.0.18",
