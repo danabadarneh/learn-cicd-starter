@@ -5,7 +5,8 @@
   "main": "main.js",
   "scripts": {
     "start": "node main.js",
-    "build": "echo 'No build needed for Go/Docker app'"
+    "build": "echo 'No build needed for Go/Docker app'",
+    "db:migrate": "bash ./scripts/migrateup.sh"
   },
   "author": "Dana Badarneh",
   "license": "MIT",
