@@ -1,26 +1,30 @@
 
-name: Build and Deploy to GCP
+name: cd
 
 on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
-  build-and-deploy:
+  Deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout code
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      # Authenticate with GCP using your service account
-      - uses: google-github-actions/auth@v1
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
         with:
           credentials_json: ${{ secrets.GCP_CREDENTIALS }}
 
-      # Set GCP project
-      - run: gcloud config set project notely-dana
+      - name: Set up gcloud
+        uses: google-github-actions/setup-gcloud@v2
 
-      # Build and push Docker image
-      - run: gcloud builds submit --tag us-central1-docker.pkg.dev/notely-dana/notely-ar-repo/notely-app:v1 .
+      - name: Set GCP project
+        run: gcloud config set project notely-dana
+
+      - name: Build and push Docker image
+        run: gcloud builds submit --tag us-central1-docker.pkg.dev/notely-dana/notely-ar-repo/notely-app:notely-latest .

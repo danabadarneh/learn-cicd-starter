@@ -1,5 +1,5 @@
 # Dockerfile
-FROM --platform=linux/amd64 golang:1.21-alpine AS build
+FROM --platform=linux/amd64 golang:1.22-alpine AS build
 
 # إعداد مجلد العمل
 WORKDIR /app
