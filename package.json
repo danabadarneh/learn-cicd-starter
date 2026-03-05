@@ -1,18 +1,16 @@
 {
-  "name": "learn-cicd-starter",
+  "name": "notely-app",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Notely app project",
+  "main": "main.js",
   "scripts": {
-    "start": "node index.js",
-    "test": "vitest --run",
-    "format:check": "prettier --check .",
-    "format:write": "prettier --write ."
+    "start": "node main.js",
+    "build": "echo 'No build needed for Go/Docker app'"
   },
-  "dependencies": {},
+  "author": "Dana Badarneh",
+  "license": "MIT",
+  "dependencies": {
+  },
   "devDependencies": {
-    "prettier": "3.8.1",
-    "vitest": "^4.0.18",
-    "@vitest/coverage-v8": "^4.0.18"
   }
 }
