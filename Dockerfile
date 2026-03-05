@@ -1,7 +1,23 @@
-FROM --platform=linux/amd64 debian:stable-slim
+# Dockerfile
+FROM --platform=linux/amd64 golang:1.21-alpine AS build
 
-RUN apt-get update && apt-get install -y ca-certificates
+# إعداد مجلد العمل
+WORKDIR /app
 
-ADD notely /usr/bin/notely
+# نسخ كل الملفات
+COPY . .
 
+# بناء التطبيق باسم notely
+RUN go build -o notely main.go
+
+# المرحلة الثانية: صورة أخف للتشغيل
+FROM alpine:latest
+
+# تثبيت شهادات SSL
+RUN apk add --no-cache ca-certificates
+
+# نسخ البرنامج المبني
+COPY --from=build /app/notely /usr/bin/notely
+
+# تشغيل البرنامج
 CMD ["notely"]
