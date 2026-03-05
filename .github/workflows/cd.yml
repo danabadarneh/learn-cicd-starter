@@ -10,26 +10,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout the code
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      # Step 1: Checkout repo
+      - uses: actions/checkout@v3
 
-      # Step 2: Set up GCP authentication
-      - name: Authenticate to GCP
-        uses: google-github-actions/auth@v1
+      # Step 2: Authenticate with GCP
+      - uses: google-github-actions/auth@v1
         with:
           credentials_json: ${{ secrets.GCP_CREDENTIALS }}
 
-      # Step 3: Set the GCP project
-      - name: Set GCP project
-        run: gcloud config set project notely-dana
+      # Step 3: Set project
+      - run: gcloud config set project notely-dana
 
-      # Step 4: Skip npm build/test/format errors
-      - name: Skip npm scripts
-        run: |
-          echo "Skipping build, test, format:check because scripts are missing"
-
-      # Step 5: Build and push Docker image
-      - name: Build and push Docker image
-        run: |
+      # Step 4: Build & push Docker image
+      - run: |
           gcloud builds submit --tag us-central1-docker.pkg.dev/notely-dana/notely-ar-repo/notely-app:v1 .
