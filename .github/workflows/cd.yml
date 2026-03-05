@@ -28,3 +28,6 @@ jobs:
 
       - name: Build and push Docker image
         run: gcloud builds submit --tag us-central1-docker.pkg.dev/notely-dana/notely-ar-repo/notely-app:notely-latest .
+
+      - name: Deploy to Cloud Run
+        run: gcloud run deploy notely --image us-central1-docker.pkg.dev/notely-dana/notely-ar-repo/notely-app:notely-latest --region us-central1 --allow-unauthenticated --project notely-dana --max-instances=4
