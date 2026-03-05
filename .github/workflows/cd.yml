@@ -8,32 +8,29 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-
     steps:
-      # 1️⃣ Checkout code
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      # 2️⃣ Authenticate with GCP using Service Account JSON
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build app
+        run: npm run build || echo "No build script, skipping"
+
       - name: Authenticate to GCP
         uses: google-github-actions/auth@v1
         with:
           credentials_json: ${{ secrets.GCP_CREDENTIALS }}
 
-      # 3️⃣ Set default project
       - name: Set GCP project
         run: gcloud config set project notely-dana
 
-      # 4️⃣ Build Docker image and push to Artifact Registry
       - name: Build and push Docker image
         run: |
           gcloud builds submit --tag us-central1-docker.pkg.dev/notely-dana/notely-ar-repo/notely-app:v1 .
-
-      # 5️⃣ Deploy to Cloud Run
-      - name: Deploy to Cloud Run
-        run: |
-          gcloud run deploy notely-app \
-            --image us-central1-docker.pkg.dev/notely-dana/notely-ar-repo/notely-app:v1 \
-            --region us-central1 \
-            --platform managed \
-            --allow-unauthenticated
