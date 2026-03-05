@@ -7,8 +7,8 @@ WORKDIR /app
 # نسخ كل الملفات
 COPY . .
 
-# بناء التطبيق باسم notely
-RUN go build -o notely main.go
+# Build the full module so all handlers/middleware are compiled in.
+RUN go build -o notely .
 
 # المرحلة الثانية: صورة أخف للتشغيل
 FROM alpine:latest
