@@ -1,65 +1,110 @@
-<<<<<<< HEAD
-![Tests](https://github.com/danabadarneh/learn-cicd-starter/actions/workflows/ci.yml/badge.svg)
+# Webhook-Driven Task Processing Pipeline
 
-# Learn CI/CD Starter
+TypeScript service that receives webhooks, queues background jobs, processes payloads, and delivers results to subscribers with retry logic.
 
-# learn-cicd-starter (Notely)
+## Architecture
 
-This repo contains the starter code for the "Notely" application for the "Learn CICD" course on [Boot.dev](https://boot.dev).
+- `API service` (Express):
+  - CRUD for pipelines
+  - webhook ingestion endpoint `/webhooks/:webhookKey`
+- `PostgreSQL`:
+  - stores pipelines, events, jobs, and per-subscriber delivery attempts
+- `Worker service`:
+  - pulls pending jobs
+  - applies action types
+  - delivers results to subscribers with exponential backoff retries
 
-## Local Development
+## Action Types
 
-Make sure you're on Go version 1.22+.
+1. `uppercase`: uppercases all string values in payload recursively
+2. `pick_fields`: keeps only selected fields (`config.fields`)
+3. `add_metadata`: appends processing metadata (`eventId`, `processedAt`)
 
-Create a `.env` file in the root of the project with the following contents:
+## Data Flow
 
-```bash
-PORT="8080"
+1. Create pipeline via `POST /pipelines`
+2. Send webhook to generated `sourceUrl`
+3. API stores event and enqueues job (`202 Accepted`)
+4. Worker processes action and creates delivery rows
+5. Worker POSTs to subscribers with retry on failure
+6. Job becomes `succeeded` or `failed`
+
+## API
+
+### Create pipeline
+
+`POST /pipelines`
+
+```json
+{
+  "name": "Order pipeline",
+  "action": {
+    "type": "pick_fields",
+    "config": { "fields": ["orderId", "status"] }
+  },
+  "subscribers": [
+    "https://example.com/hook-1",
+    "https://example.com/hook-2"
+  ]
+}
 ```
 
-=======
+### List pipelines
 
-# Notely
+`GET /pipelines`
 
-A simple note-taking web application built with Go.
+### Get pipeline
 
-## Features
+`GET /pipelines/:id`
 
-- Basic web server
-- HTML templates
-- Static file serving
+### Update pipeline
 
-## Running Locally
+`PUT /pipelines/:id`
 
-1. Ensure you have Go installed (version 1.19 or later).
-2. Clone your forked repository.
-3. Run the application:
-   ```bash
-   go run main.go
-   ```
-4. Open your browser and navigate to `http://localhost:8080`.
+### Delete pipeline
 
-## Technologies
+`DELETE /pipelines/:id`
 
-- Go (backend)
-- HTML/CSS (frontend)
+### Ingest webhook
 
-dana badarneh's version of Boot.dev's Notely app.
+`POST /webhooks/:webhookKey`
 
-> > > > > > > addtests
-> > > > > > > Run the server:
+Body: any JSON payload.
+
+## Local Run (Docker)
 
 ```bash
-go build -o notely && ./notely
+cp .env.example .env
+docker compose up --build
 ```
 
-_This starts the server in non-database mode._ It will serve a simple webpage at `http://localhost:8080`.
+API base URL: `http://localhost:8080`
 
-You do _not_ need to set up a database or any interactivity on the webpage yet. Instructions for that will come later in the course!
-Dana Badarneh's version of Boot.dev's Notely app.
+Health check:
 
-# Test CI
+```bash
+curl http://localhost:8080/health
+```
 
-# Trigger CI
+## Local Run (without Docker)
 
-# Trigger CI workflow
+```bash
+npm ci
+cp .env.example .env
+npm run migrate
+npm run dev
+```
+
+In another terminal:
+
+```bash
+npm run dev:worker
+```
+
+## CI
+
+GitHub Actions pipeline runs:
+
+- `npm ci`
+- `npm test`
+- `npm run build`
